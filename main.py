@@ -2,6 +2,7 @@ import pygame
 import sys
 from pygame.locals import *
 from constants import *
+from Character import *
 
 class Game:
 
@@ -12,15 +13,20 @@ class Game:
         self.screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT))
         self.screen.fill(WHITE)
         pygame.display.set_caption('Le Villager')
+        self.char = Character((0, 255, 0), 30, 30)
+        self.character_group = pygame.sprite.Group()
+        self.character_group.add(self.char)
 
     def update(self):
         for event in pygame.event.get():
             if event.type == QUIT:
-                pygame.quit()
+                pygame.display.quit()
                 sys.exit()
 
 
     def draw(self):
+        self.character_group.update()
+        self.character_group.draw(self.screen)
         pygame.display.update()
 
     def gameLoop(self):
