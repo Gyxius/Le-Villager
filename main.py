@@ -5,26 +5,27 @@ from constants import *
 from Character import *
 
 class Game:
-
     def __init__(self):
         pygame.init()
-        self.WINDOW_WIDTH = 1280
-        self.WINDOW_HEIGHT = 720
+        self.WINDOW_WIDTH = TILE_SIZE*10
+        self.WINDOW_HEIGHT = TILE_SIZE*10
         self.screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT))
-        self.screen.fill(WHITE)
         pygame.display.set_caption('Le Villager')
-        self.char = Character((0, 255, 0), 30, 30)
+        self.screen.fill(LIGHT_BLUE)
+        self.player1 = Player("Bob", 5, 5)
         self.character_group = pygame.sprite.Group()
-        self.character_group.add(self.char)
+        self.character_group.add(self.player1)
 
     def update(self):
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.display.quit()
                 sys.exit()
-
+            else:
+                self.player1.movePlayer(event)
 
     def draw(self):
+        self.screen.fill(LIGHT_BLUE)
         self.character_group.update()
         self.character_group.draw(self.screen)
         pygame.display.update()
