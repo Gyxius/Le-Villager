@@ -19,23 +19,46 @@ class Character(pygame.sprite.Sprite):
         pass
 
 class Player(Character):
+    """
+    A class that represents the main character
+
+    Attributes
+    ----------
+    image : surface
+        The sprite of the player
+    rect : tuple
+        The rectangle surrounding the player
+    y : int
+        The Y position of the player 
+    x : int
+        The X position of the player 
+    name : string
+        The name of the player
+
+    Methods
+    -------
+    moveplayer(event)
+        Moves the player on the x axis (so far)
+    """
     def __init__(self, name = "Bob", pos_x = 0, pos_y = 0,):
         Character.__init__(self)
         self.image = Loader.load('img/knight.png')
         self.rect = self.image.get_rect()
-        self.x = pos_x*TILE_SIZE
-        self.y = pos_y*TILE_SIZE
-        self.rect.x = self.x
-        self.rect.y = self.y
+        self.playerx = pos_x*TILE_SIZE
+        self.playery = pos_y*TILE_SIZE
+        self.rect.x = self.playerx
+        self.rect.y = self.playery
         self.name = name
 
     def movePlayer(self, event):
         if event.type == KEYDOWN:
             if event.key == K_q:
-                self.rect.x -= TILE_SIZE
+                self.playerx -= TILE_SIZE 
             elif event.key == K_d:
-                self.rect.x += TILE_SIZE
+                self.playerx += TILE_SIZE 
 
+    def update(self):
+        self.rect = Rect(self.playerx, self.playery, 66, 92)
     
         
 

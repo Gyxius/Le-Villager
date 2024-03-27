@@ -15,6 +15,7 @@ class Game:
         self.player1 = Player("Bob", 5, 5)
         self.character_group = pygame.sprite.Group()
         self.character_group.add(self.player1)
+        self.clock = pygame.time.Clock()
 
     def update(self):
         for event in pygame.event.get():
@@ -31,6 +32,7 @@ class Game:
         pygame.display.update()
 
     def gameLoop(self):
+        self.clock.tick(FPS)
         while True:
             self.update()
             self.draw()
