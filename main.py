@@ -12,7 +12,7 @@ class Game:
         self.screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT))
         pygame.display.set_caption('Le Villager')
         self.screen.fill(LIGHT_BLUE)
-        self.player1 = Player("Bob", 5, 5)
+        self.player1 = Player("Bob", 5, 7)
         self.character_group = pygame.sprite.Group()
         self.character_group.add(self.player1)
         self.clock = pygame.time.Clock()

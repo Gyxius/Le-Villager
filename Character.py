@@ -42,7 +42,7 @@ class Player(Character):
     """
     def __init__(self, name = "Bob", pos_x = 0, pos_y = 0,):
         Character.__init__(self)
-        self.image = Loader.load('img/knight.png')
+        self.image = Loader.load('img/knight.png', 'LEFT')
         self.rect = self.image.get_rect()
         self.playerx = pos_x*TILE_SIZE
         self.playery = pos_y*TILE_SIZE
@@ -54,11 +54,14 @@ class Player(Character):
         if event.type == KEYDOWN:
             if event.key == K_q:
                 self.playerx -= TILE_SIZE 
+                self.image = Loader.load('img/knight.png', 'LEFT')
             elif event.key == K_d:
                 self.playerx += TILE_SIZE 
+                self.image = Loader.load('img/knight.png', 'RIGHT')
 
     def update(self):
-        self.rect = Rect(self.playerx, self.playery, 66, 92)
+        self.rect.x  = self.playerx
+        self.rect.y  = self.playery
     
         
 
