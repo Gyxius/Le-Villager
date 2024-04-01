@@ -13,8 +13,9 @@ class Game:
         pygame.display.set_caption('Le Villager')
         self.screen.fill(LIGHT_BLUE)
         self.player1 = Player("Bob", 5, 7)
+        self.enemy = Enemy()
         self.character_group = pygame.sprite.Group()
-        self.character_group.add(self.player1)
+        self.character_group.add(self.player1, self.enemy)
         self.clock = pygame.time.Clock()
 
     def update(self):
@@ -23,7 +24,8 @@ class Game:
                 pygame.display.quit()
                 sys.exit()
             else:
-                self.player1.movePlayer(event)
+                self.player1.move(event)
+            
 
     def draw(self):
         self.screen.fill(LIGHT_BLUE)
@@ -32,8 +34,8 @@ class Game:
         pygame.display.update()
 
     def gameLoop(self):
-        self.clock.tick(FPS)
         while True:
+            self.clock.tick(FPS)
             self.update()
             self.draw()
 

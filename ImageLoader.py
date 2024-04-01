@@ -15,11 +15,13 @@ class Loader():
         Returns the image
     """
     img_tile = 115 # px
+    
     @staticmethod
     def load(path, direction):
         """
         Given an image path and a direction, it returns the sprite from the image 
         The image returned will be used by the character class
+        The knight image has as dimension 3X3 with [0,0] being the top left part
 
         Args:
             path (string): the path of the image file
