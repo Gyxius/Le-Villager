@@ -134,11 +134,6 @@ class Enemy(Character):
         self.rect.y = self.enemyy
         self.state = "Neutral"
         self.speed = 1000
-    
-    def update(self):
-        self.move()
-        self.rect.x  = self.enemyx
-        self.rect.y  = self.enemyy
 
     @Character.movement_speed
     def move(self):
@@ -154,7 +149,12 @@ class Enemy(Character):
             elif self.enemy_changex == -1:
                 self.image = Loader.load('img/skeleton.png', 'LEFT')
         if self.state == "Attacked":
+            ## TODO update by adding the player, or actually using the group
             pass
                 
+    def update(self):
+        self.move()
+        self.rect.x  = self.enemyx
+        self.rect.y  = self.enemyy
 
         

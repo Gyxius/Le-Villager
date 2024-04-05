@@ -2,7 +2,8 @@ import pygame
 import sys
 from pygame.locals import *
 from constants import *
-from Character import *
+from character import *
+from map import *
 
 class Game:
     def __init__(self):
@@ -12,6 +13,7 @@ class Game:
         self.screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT))
         pygame.display.set_caption('Le Villager')
         self.screen.fill(LIGHT_BLUE)
+        self.map = Map()
         self.player1 = Player("Bob", 5, 7)
         self.enemy = Enemy()
         self.character_group = pygame.sprite.Group()
@@ -29,6 +31,7 @@ class Game:
 
     def draw(self):
         self.screen.fill(LIGHT_BLUE)
+        self.map.drawGrid(self.screen)
         self.character_group.update()
         self.character_group.draw(self.screen)
         pygame.display.update()
