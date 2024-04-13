@@ -94,6 +94,9 @@ class Player(Character):
         self.rect.x  = self.playerx
         self.rect.y  = self.playery
 
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
+
 class Enemy(Character):
     """
     A class that represents the enemies

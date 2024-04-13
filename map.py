@@ -43,6 +43,12 @@ class Map:
                 rect = pygame.Rect(TILE_SIZE*x,TILE_SIZE*y, TILE_SIZE, TILE_SIZE)
                 pygame.draw.rect(screen, WHITE, rect, 1)
 
+    def getGrid(self):
+        """
+        Returns the Grid
+        """
+        return self.grid
+
 if __name__ == "__main__":
     map = Map()
     map.createGrid()
