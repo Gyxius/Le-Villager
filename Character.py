@@ -71,24 +71,34 @@ class Player(Character):
     moveplayer(event)
         Moves the player on the x axis (so far)
     """
-    def __init__(self, name = "Bob", pos_x = 0, pos_y = 0,):
+    def __init__(self, group, name = "Bob", pos_x = 0, pos_y = 0):
         Character.__init__(self)
         self.image = Loader.load('img/knight.png', 'LEFT')
         self.rect = self.image.get_rect()
         self.playerx = pos_x*TILE_SIZE
         self.playery = pos_y*TILE_SIZE
+        self.playerdx = 0
+        self.playerdy = 0
         self.rect.x = self.playerx
         self.rect.y = self.playery
         self.name = name
+        self.group = group
 
     def move(self, event):
         if event.type == KEYDOWN:
             if event.key == K_q:
-                self.playerx -= TILE_SIZE 
-                self.image = Loader.load('img/knight.png', 'LEFT')
+                self.playerdx = -TILE_SIZE
             elif event.key == K_d:
-                self.playerx += TILE_SIZE 
+                self.playerdx = TILE_SIZE 
+            
+            if self.playerdx < 0:
+                self.image = Loader.load('img/knight.png', 'LEFT')
+            elif self.playerdx > 0:
                 self.image = Loader.load('img/knight.png', 'RIGHT')
+            else:
+                pass
+            self.checkCollision()
+            self.playerx += self.playerdx 
 
     def update(self):
         self.rect.x  = self.playerx
@@ -96,6 +106,15 @@ class Player(Character):
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+
+    def checkCollision(self):
+        requested_rect = pygame.Rect.copy(self.rect)
+        requested_rect.x += self.playerdx
+        for sprite in self.group:
+            print(sprite)
+            if sprite.rect.colliderect(requested_rect):
+                self.playerdx = 0
+
 
 class Enemy(Character):
     """
@@ -125,18 +144,19 @@ class Enemy(Character):
     moveplayer(event)
         Moves the player on the x axis (so far)
     """
-    def __init__(self):
+    def __init__(self, group):
         Character.__init__(self)
         self.image = Loader.load('img/skeleton.png', 'LEFT')
         self.rect = self.image.get_rect()
-        self.enemy_changex = 0
-        self.enemy_changey = 0
         self.enemyx = 7*TILE_SIZE
         self.enemyy = 7*TILE_SIZE
+        self.enemydx = 0
+        self.enemydy = 0
         self.rect.x = self.enemyx
         self.rect.y = self.enemyy
         self.state = "Neutral"
         self.speed = 1000
+        self.group = group
 
     @Character.movement_speed
     def move(self):
@@ -145,17 +165,28 @@ class Enemy(Character):
         The enemy either moves randomly if the state is "Neutral" or toward the player if "Attacked"
         """
         if self.state == "Neutral":
-            self.enemy_changex = random.randint(-1,1)
-            self.enemyx += self.enemy_changex*TILE_SIZE 
-            if self.enemy_changex == 1:
+            self.enemydx = random.randint(-1,1) * TILE_SIZE 
+            if self.enemydx > 0:
                 self.image = Loader.load('img/skeleton.png', 'RIGHT')
-            elif self.enemy_changex == -1:
+            elif self.enemydx < 0:
                 self.image = Loader.load('img/skeleton.png', 'LEFT')
+            else:
+                pass
+            self.checkCollision()
+            self.enemyx += self.enemydx 
+
         if self.state == "Attacked":
             ## TODO update by adding the player, or actually using the group
             pass
+
+    def checkCollision(self):
+        requested_rect = pygame.Rect.copy(self.rect)
+        requested_rect.x += self.enemydx
+        for sprite in self.group:
+            if sprite.rect.colliderect(requested_rect):
+                self.enemydx = 0
                 
-    def update(self):
+    def update(self, a = 2):
         self.move()
         self.rect.x  = self.enemyx
         self.rect.y  = self.enemyy
