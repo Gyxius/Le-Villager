@@ -107,18 +107,19 @@ class Player(Character):
         self.rect.x  = self.playerx
         self.rect.y  = self.playery
 
-    def updateHealthBarColor(self):
+    def drawHealthBar(self, screen):
         if self.health > 70:
             self.HealthBarColor = LIGHT_GREEN
         elif self.health > 30:
             self.HealthBarColor = ORANGE
         else:
             self.HealthBarColor = RED
-        
-    def draw(self, screen):
-        self.updateHealthBarColor()
         pygame.draw.rect(screen, self.HealthBarColor, pygame.Rect(30, 30, self.health*2, 30)) # Draw Health bar
 
+        
+    def draw(self, screen):
+        self.drawHealthBar(screen)
+        
     def checkCollision(self):
         requested_rect = pygame.Rect.copy(self.rect)
         requested_rect.x += self.playerdx
