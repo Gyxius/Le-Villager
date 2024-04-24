@@ -18,7 +18,7 @@ class Game:
         self.attackable_group = pygame.sprite.Group()
 
         self.player1 = Player(self.character_group, "Bob", 5, 7)
-        self.enemy1 = Enemy(self.character_group)
+        self.enemy1 = Enemy(self.character_group, self.player1)
         self.attackable_group.add(self.enemy1)
         self.character_group.add(self.enemy1)
         self.character_group.add(self.player1)
@@ -26,7 +26,6 @@ class Game:
 
     def update(self):
         self.playerUpdate()
-        self.enemyUpdate()
         self.character_group.update()
 
     def playerUpdate(self):
@@ -50,15 +49,13 @@ class Game:
             if target_sprite.rect.colliderect(left_rect) or target_sprite.rect.colliderect(right_rect):
                 target_sprite.getDamage(self.player1)
 
-    def enemyUpdate(self):
-        #TODO use attackable group and update this group instead
-        self.enemy1.move(self.player1)
-
     def draw(self):
         self.screen.fill(LIGHT_BLUE)
         self.map.drawGrid(self.screen)
         self.character_group.draw(self.screen)
+        self.player1.draw(self.screen)
         pygame.display.update()
+        
 
     def gameLoop(self):
         while True:

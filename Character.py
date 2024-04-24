@@ -102,8 +102,7 @@ class Player(Character):
         self.rect.y  = self.playery
 
     def draw(self, screen):
-        screen.blit(self.image, self.rect)
-        print("draw")
+        pygame.draw.rect(screen, LIGHT_GREEN, pygame.Rect(30, 30, self.health*2, 30)) # Draw Health bar
 
     def checkCollision(self):
         requested_rect = pygame.Rect.copy(self.rect)
@@ -145,7 +144,7 @@ class Enemy(Character):
     moveplayer(event)
         Moves the player on the x axis (so far)
     """
-    def __init__(self, group):
+    def __init__(self, group, player):
         Character.__init__(self)
         self.spritetype = "enemy" 
         self.image = Loader.load('img/skeleton.png', 'LEFT')
@@ -161,6 +160,7 @@ class Enemy(Character):
         self.group = group
         self.health = 100
         self.attack = 10
+        self.player = player
 
     @Character.movement_speed
     def move(self, player):
@@ -168,6 +168,8 @@ class Enemy(Character):
         Change the position of the character
         The enemy either moves randomly if the state is "Neutral" or toward the player if "Attacked"
         """
+        print("here")
+        self.checkDeath()
         if self.state == "Idle":
             self.enemydx = random.randint(-1,1) * TILE_SIZE 
 
@@ -210,12 +212,18 @@ class Enemy(Character):
         self.health -= player.attack
 
     def checkDeath(self):
-        if self.health < 0:
+        if self.health <= 0:
+            print(self)
             self.kill()
+            print(self)
+            print("dead")
         
     def update(self):
+        self.checkDeath()
         self.rect.x  = self.enemyx
         self.rect.y  = self.enemyy
-        self.checkDeath()
+        self.move(self.player)
+        
+
 
         
