@@ -103,6 +103,7 @@ class Player(Character):
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+        print("draw")
 
     def checkCollision(self):
         requested_rect = pygame.Rect.copy(self.rect)
@@ -112,6 +113,7 @@ class Player(Character):
                 self.playerdx = 0
     
     def getDamage(self, enemy):
+        # Get vulnerability
         self.health -= enemy.attack
 
 
@@ -192,7 +194,7 @@ class Enemy(Character):
                 self.enemydx = 0
     
     def follow(self, player):
-        if player.playerx + TILE_SIZE <= self.enemyx <= player.playerx + 2*TILE_SIZE:
+        if player.playerx <= self.enemyx <= player.playerx + TILE_SIZE:
             return 0
         elif player.playerx < self.enemyx  :
             return -1
@@ -202,6 +204,7 @@ class Enemy(Character):
             return 0
     
     def getDamage(self, player):
+        # Get vulnerability
         if self.state == "Idle":
             self.state = "Attacked"
         self.health -= player.attack

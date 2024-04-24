@@ -51,7 +51,7 @@ class Game:
                 target_sprite.getDamage(self.player1)
 
     def enemyUpdate(self):
-        #TODO use attackble group and update this group instead
+        #TODO use attackable group and update this group instead
         self.enemy1.move(self.player1)
 
     def draw(self):
