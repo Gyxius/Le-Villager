@@ -42,6 +42,10 @@ class Character(pygame.sprite.Sprite):
                 func(self, player)
                 self.current_time = current_time
         return inner
+    
+    def checkDeath(self):
+        if self.health <= 0:
+            self.kill()
 
 class Player(Character):
     """
@@ -98,6 +102,7 @@ class Player(Character):
         self.playerdx = 0
 
     def update(self):
+        self.checkDeath()
         self.rect.x  = self.playerx
         self.rect.y  = self.playery
 
@@ -144,13 +149,13 @@ class Enemy(Character):
     moveplayer(event)
         Moves the player on the x axis (so far)
     """
-    def __init__(self, group, player):
+    def __init__(self, group, player, enemyx = 7, enemyy = 7):
         Character.__init__(self)
         self.spritetype = "enemy" 
         self.image = Loader.load('img/skeleton.png', 'LEFT')
         self.rect = self.image.get_rect()
-        self.enemyx = 7*TILE_SIZE
-        self.enemyy = 7*TILE_SIZE
+        self.enemyx = enemyx*TILE_SIZE
+        self.enemyy = enemyy*TILE_SIZE
         self.enemydx = 0
         self.enemydy = 0
         self.rect.x = self.enemyx
@@ -168,8 +173,6 @@ class Enemy(Character):
         Change the position of the character
         The enemy either moves randomly if the state is "Neutral" or toward the player if "Attacked"
         """
-        print("here")
-        self.checkDeath()
         if self.state == "Idle":
             self.enemydx = random.randint(-1,1) * TILE_SIZE 
 
@@ -211,13 +214,6 @@ class Enemy(Character):
             self.state = "Attacked"
         self.health -= player.attack
 
-    def checkDeath(self):
-        if self.health <= 0:
-            print(self)
-            self.kill()
-            print(self)
-            print("dead")
-        
     def update(self):
         self.checkDeath()
         self.rect.x  = self.enemyx

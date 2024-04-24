@@ -8,17 +8,17 @@ from map import *
 class Game:
     def __init__(self):
         pygame.init()
-        self.WINDOW_WIDTH = TILE_SIZE*10
-        self.WINDOW_HEIGHT = TILE_SIZE*10
-        self.screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT))
+        self.WINDOW_WIDTH = 20
+        self.WINDOW_HEIGHT = 10
+        self.screen = pygame.display.set_mode((self.WINDOW_WIDTH * TILE_SIZE, self.WINDOW_HEIGHT * TILE_SIZE))
         pygame.display.set_caption('Le Villager')
         self.screen.fill(LIGHT_BLUE)
-        self.map = Map()
+        self.map = Map(self.WINDOW_HEIGHT, self.WINDOW_WIDTH)
         self.character_group = pygame.sprite.Group()
         self.attackable_group = pygame.sprite.Group()
 
         self.player1 = Player(self.character_group, "Bob", 5, 7)
-        self.enemy1 = Enemy(self.character_group, self.player1)
+        self.enemy1 = Enemy(self.character_group, self.player1, 12)
         self.attackable_group.add(self.enemy1)
         self.character_group.add(self.enemy1)
         self.character_group.add(self.player1)
