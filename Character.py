@@ -84,6 +84,7 @@ class Player(Character):
         self.group = group
         self.health = 100
         self.attack = 30
+        self.HealthBarColor = LIGHT_GREEN
 
     def move(self, event):
         if event.key == K_q:
@@ -106,8 +107,17 @@ class Player(Character):
         self.rect.x  = self.playerx
         self.rect.y  = self.playery
 
+    def updateHealthBarColor(self):
+        if self.health > 70:
+            self.HealthBarColor = LIGHT_GREEN
+        elif self.health > 30:
+            self.HealthBarColor = ORANGE
+        else:
+            self.HealthBarColor = RED
+        
     def draw(self, screen):
-        pygame.draw.rect(screen, LIGHT_GREEN, pygame.Rect(30, 30, self.health*2, 30)) # Draw Health bar
+        self.updateHealthBarColor()
+        pygame.draw.rect(screen, self.HealthBarColor, pygame.Rect(30, 30, self.health*2, 30)) # Draw Health bar
 
     def checkCollision(self):
         requested_rect = pygame.Rect.copy(self.rect)
