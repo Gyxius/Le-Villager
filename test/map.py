@@ -48,15 +48,6 @@ class Map:
         Returns the Grid
         """
         return self.grid
-    
-    def draw(self, screen, WINDOW_WIDTH, WINDOW_HEIGHT):
-        """
-        Draw the Background colors and the grid
-        """
-        screen.fill(LIGHT_BLUE)
-        pygame.draw.rect(screen, GRASS_GREEN, (TILE_SIZE*0, TILE_SIZE*7, WINDOW_WIDTH * TILE_SIZE, WINDOW_HEIGHT * TILE_SIZE))
-        #self.drawGrid(screen)
-
 
 if __name__ == "__main__":
     map = Map()

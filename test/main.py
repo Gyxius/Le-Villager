@@ -50,7 +50,9 @@ class Game:
                 target_sprite.getDamage(self.player1)
 
     def draw(self):
-        self.map.draw(self.screen, self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
+        self.screen.fill(LIGHT_BLUE)
+        pygame.draw.rect(self.screen,GRASS_GREEN,(TILE_SIZE*0,TILE_SIZE*7,self.WINDOW_WIDTH * TILE_SIZE,self.WINDOW_HEIGHT * TILE_SIZE))
+        self.map.drawGrid(self.screen)
         self.character_group.draw(self.screen)
         self.player1.draw(self.screen)
         pygame.display.update()
