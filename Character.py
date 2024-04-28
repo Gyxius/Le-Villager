@@ -38,6 +38,7 @@ class Character(pygame.sprite.Sprite):
     def movement_speed(func):
         def inner(self, player):
             current_time = pygame.time.get_ticks()
+            self.game_time = current_time
             if current_time - self.current_time >= self.speed:
                 func(self, player)
                 self.current_time = current_time
@@ -181,6 +182,8 @@ class Enemy(Character):
         self.enemyy = enemyy*TILE_SIZE
         self.enemydx = 0
         self.enemydy = 0
+        self.attacking = False
+        self.attack_start_time = 0
         self.rect.x = self.enemyx
         self.rect.y = self.enemyy
         self.state = "Idle"
@@ -189,6 +192,17 @@ class Enemy(Character):
         self.health = 100
         self.attack = 10
         self.player = player
+        self.position = 'LEFT'
+
+    def updateSprite(self):
+        if self.attacking == True and self.game_time - self.attack_start_time >= 250:
+            self.attacking = False
+
+        if self.attacking == False:
+            self.image = Loader.load('img/skeleton.png', self.position)
+        else:
+            self.image = Loader.load('img/skeleton_attack.png', self.position)
+
 
     @Character.movement_speed
     def move(self, player):
@@ -203,16 +217,20 @@ class Enemy(Character):
             self.enemydx = self.follow(player) * TILE_SIZE 
         
         if self.enemydx > 0:
-            self.image = Loader.load('img/skeleton.png', 'RIGHT')
+            self.position = 'RIGHT'
         elif self.enemydx < 0:
-            self.image = Loader.load('img/skeleton.png', 'LEFT')
+            self.position = 'LEFT'
         else:
             if self.state == "Attacked":
+                self.attacking = True
+                self.attack_start_time = pygame.time.get_ticks()
                 player.getDamage(self)
 
         self.checkCollision()
         self.enemyx += self.enemydx 
         self.enemydx = 0
+
+        #self.updateSprite()
 
     def checkCollision(self):
         requested_rect = pygame.Rect.copy(self.rect)
@@ -222,7 +240,7 @@ class Enemy(Character):
                 self.enemydx = 0
     
     def follow(self, player):
-        if player.playerx <= self.enemyx <= player.playerx + TILE_SIZE:
+        if player.playerx - TILE_SIZE <= self.enemyx <= player.playerx + TILE_SIZE:
             return 0
         elif player.playerx < self.enemyx  :
             return -1
@@ -242,6 +260,8 @@ class Enemy(Character):
         self.rect.x  = self.enemyx
         self.rect.y  = self.enemyy
         self.move(self.player)
+        self.updateSprite()
+        print(self.enemyx)
         
 
 
