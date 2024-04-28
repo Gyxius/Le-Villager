@@ -78,6 +78,8 @@ class Player(Character):
         self.playery = pos_y*TILE_SIZE
         self.playerdx = 0
         self.playerdy = 0
+        self.attacking = False
+        self.attack_start_time = 0
         self.rect.x = self.playerx
         self.rect.y = self.playery
         self.name = name
@@ -85,19 +87,29 @@ class Player(Character):
         self.health = 100
         self.attack = 30
         self.HealthBarColor = LIGHT_GREEN
+        self.position = 'LEFT'
+
+    def updateSprite(self, current_time):
+        if self.attacking == True and current_time - self.attack_start_time >= 250:
+            self.attacking = False
+
+        if self.attacking == False:
+            self.image = Loader.load('img/knight.png', self.position)
+        else:
+            self.image = Loader.load('img/knight_attack.png', self.position)
 
     def move(self, event):
         if event.key == K_q:
             self.playerdx = -TILE_SIZE
         elif event.key == K_d:
             self.playerdx = TILE_SIZE 
-        
         if self.playerdx < 0:
-            self.image = Loader.load('img/knight.png', 'LEFT')
+            self.position = 'LEFT'
         elif self.playerdx > 0:
-            self.image = Loader.load('img/knight.png', 'RIGHT')
+            self.position = 'RIGHT'
         else:
             pass
+
         self.checkCollision()
         self.playerx += self.playerdx 
         self.playerdx = 0

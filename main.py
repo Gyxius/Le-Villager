@@ -29,6 +29,7 @@ class Game:
         self.character_group.update()
 
     def playerUpdate(self):
+        current_time = pygame.time.get_ticks()
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.display.quit()
@@ -38,9 +39,14 @@ class Game:
                     self.player1.move(event)
                 if event.key == K_SPACE:
                     self.playerAttack()
+
+        self.player1.updateSprite(current_time)
         
     def playerAttack(self):
-        """ Check if enemy is nearby and attacks it"""
+        ### Update the state of the player
+        self.player1.attacking = True
+        self.player1.attack_start_time = pygame.time.get_ticks()
+        ### Check if enemy is nearby and attacks it
         left_rect = pygame.Rect.copy(self.player1.rect)
         left_rect.x -= TILE_SIZE
         right_rect = pygame.Rect.copy(self.player1.rect)
@@ -48,6 +54,7 @@ class Game:
         for target_sprite in self.attackable_group:
             if target_sprite.rect.colliderect(left_rect) or target_sprite.rect.colliderect(right_rect):
                 target_sprite.getDamage(self.player1)
+
 
     def draw(self):
         self.map.draw(self.screen, self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
