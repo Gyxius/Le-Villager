@@ -261,7 +261,6 @@ class Enemy(Character):
         self.rect.y  = self.enemyy
         self.move(self.player)
         self.updateSprite()
-        print(self.enemyx)
         
 
 
